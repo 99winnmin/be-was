@@ -1,5 +1,7 @@
 package http.request;
 
+import java.util.Map;
+
 public class HttpRequest {
 
     private StartLine startLine;
@@ -23,5 +25,13 @@ public class HttpRequest {
 
     public Body getHttpRequestBody() {
         return body;
+    }
+
+    public String getRequestPath() {
+        return startLine.parsingPath();
+    }
+
+    public Map<String, String> getRequestParams() {
+        return startLine.parsingParams();
     }
 }

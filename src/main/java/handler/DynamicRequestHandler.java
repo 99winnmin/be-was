@@ -2,8 +2,6 @@ package handler;
 
 
 import http.request.HttpRequest;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import service.Service;
 import service.user.UserServiceFactory;
@@ -23,8 +21,8 @@ public class DynamicRequestHandler {
     }
 
     public byte[] process(HttpRequest httpRequest) {
-        String path = parsingUrl(httpRequest);
-        Map<String, String> params = parsingParams(httpRequest);
+        String path = httpRequest.getRequestPath();
+        Map<String, String> params = httpRequest.getRequestParams();
 
         if (path.startsWith("/user")) {
             UserServiceFactory userServiceFactory = UserServiceFactory.getInstance();
@@ -39,24 +37,4 @@ public class DynamicRequestHandler {
             throw new IllegalArgumentException("Unsupported URL: " + path);
         }
     }
-
-    private String parsingUrl(HttpRequest httpRequest) {
-        String path = httpRequest.getHttpRequestStartLine().getRequestTarget();
-        return path.split("\\?")[0];
-    }
-
-    private Map<String, String> parsingParams(HttpRequest httpRequest) {
-        String path = httpRequest.getHttpRequestStartLine().getRequestTarget();
-        if (!path.contains("?")) {
-            return new HashMap<>();
-        }
-        String params = path.split("\\?")[1];
-
-        Map<String, String> paramsMap = new HashMap<>();
-        Arrays.stream(params.split("&"))
-            .map(param -> param.split("="))
-            .forEach(param -> paramsMap.put(param[0], param[1]));
-        return paramsMap;
-    }
-
 }
