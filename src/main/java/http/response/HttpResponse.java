@@ -1,5 +1,7 @@
 package http.response;
 
+import java.nio.ByteBuffer;
+
 public class HttpResponse {
 
     private HttpResponseStartLine startLine;
@@ -33,13 +35,14 @@ public class HttpResponse {
         byte[] header = this.header.toString().getBytes();
         byte[] body = this.body;
 
-        byte[] response = new byte[startLine.length + header.length + body.length];
+        int totalLength = startLine.length + header.length + body.length;
 
-        System.arraycopy(startLine, 0, response, 0, startLine.length);
-        System.arraycopy(header, 0, response, startLine.length, header.length);
-        System.arraycopy(body, 0, response, startLine.length + header.length, body.length);
+        ByteBuffer buffer = ByteBuffer.allocate(totalLength);
+        buffer.put(startLine);
+        buffer.put(header);
+        buffer.put(body);
 
-        return response;
+        return buffer.array();
     }
 
 }
