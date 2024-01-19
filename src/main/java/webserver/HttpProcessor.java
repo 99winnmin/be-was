@@ -14,7 +14,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import logger.CustomLogger;
 
 public class HttpProcessor implements Runnable {
@@ -53,7 +52,7 @@ public class HttpProcessor implements Runnable {
         String line = bufferedReader.readLine();
         StartLine startLine = parsingStringLine(line);
 
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        HashMap<String, String> headers = new HashMap<>();
         line = bufferedReader.readLine();
         while (!line.isEmpty()) {
             headers.put(line.split(": ")[0], line.split(": ")[1]);
