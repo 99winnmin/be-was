@@ -1,12 +1,12 @@
 package http.response;
 
-public class HttpResponseStartLine {
+public class StartLine {
 
     private String httpVersion;
     private HttpStatusCode statusCode;
     private String statusText;
 
-    public HttpResponseStartLine(HttpStatusCode statusCode) {
+    public StartLine(HttpStatusCode statusCode) {
         this.httpVersion = "HTTP/1.1";
         this.statusCode = statusCode;
         this.statusText = statusCode.getReasonPhrase();

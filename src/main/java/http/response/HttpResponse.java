@@ -4,21 +4,21 @@ import java.nio.ByteBuffer;
 
 public class HttpResponse {
 
-    private HttpResponseStartLine startLine;
-    private HttpResponseHeader header;
+    private StartLine startLine;
+    private Header header;
     private byte[] body;
 
-    public HttpResponse(HttpResponseStartLine startLine, HttpResponseHeader header, byte[] body) {
+    public HttpResponse(StartLine startLine, Header header, byte[] body) {
         this.startLine = startLine;
         this.header = header;
         this.body = body;
     }
 
-    public HttpResponseStartLine getStartLine() {
+    public StartLine getStartLine() {
         return startLine;
     }
 
-    public HttpResponseHeader getHeader() {
+    public Header getHeader() {
         return header;
     }
 

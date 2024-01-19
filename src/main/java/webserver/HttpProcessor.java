@@ -2,10 +2,10 @@ package webserver;
 
 import handler.RequestHandler;
 import handler.ResponseHandler;
+import http.request.Body;
+import http.request.Header;
 import http.request.HttpRequest;
-import http.request.HttpRequestBody;
-import http.request.HttpRequestHeader;
-import http.request.HttpRequestStartLine;
+import http.request.StartLine;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,7 +51,7 @@ public class HttpProcessor implements Runnable {
             new InputStreamReader(in, StandardCharsets.UTF_8));
 
         String line = bufferedReader.readLine();
-        HttpRequestStartLine httpRequestStartLine = parsingStringLine(line);
+        StartLine startLine = parsingStringLine(line);
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         line = bufferedReader.readLine();
@@ -59,15 +59,15 @@ public class HttpProcessor implements Runnable {
             headers.put(line.split(": ")[0], line.split(": ")[1]);
             line = bufferedReader.readLine();
         }
-        HttpRequestHeader httpRequestHeader = new HttpRequestHeader(headers);
+        Header header = new Header(headers);
 
         // TODO: HTTP Request Body Parser 구현
-        HttpRequestBody httpRequestBody = new HttpRequestBody(new HashMap<>());
-        return new HttpRequest(httpRequestStartLine, httpRequestHeader, httpRequestBody);
+        Body body = new Body(new HashMap<>());
+        return new HttpRequest(startLine, header, body);
     }
 
-    private HttpRequestStartLine parsingStringLine(String startLine) {
+    private StartLine parsingStringLine(String startLine) {
         String[] startLines = startLine.split(" ");
-        return new HttpRequestStartLine(startLines[0], startLines[1], startLines[2]);
+        return new StartLine(startLines[0], startLines[1], startLines[2]);
     }
 }

@@ -2,10 +2,10 @@ package handler;
 
 import http.request.HttpRequest;
 import http.response.ContentType;
+import http.response.Header;
 import http.response.HttpResponse;
-import http.response.HttpResponseHeader;
-import http.response.HttpResponseStartLine;
 import http.response.HttpStatusCode;
+import http.response.StartLine;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -46,8 +46,8 @@ public class ResponseHandler {
         responseHeader.put("Content-Type", getContentType(httpRequest));
 
         return new HttpResponse(
-            new HttpResponseStartLine(HttpStatusCode.OK),
-            new HttpResponseHeader(responseHeader),
+            new StartLine(HttpStatusCode.OK),
+            new Header(responseHeader),
             body
         );
     }

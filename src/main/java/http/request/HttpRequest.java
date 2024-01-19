@@ -2,26 +2,26 @@ package http.request;
 
 public class HttpRequest {
 
-    private HttpRequestStartLine httpRequestStartLine;
-    private HttpRequestHeader httpRequestHeader;
-    private HttpRequestBody httpRequestBody;
+    private StartLine startLine;
+    private Header header;
+    private Body body;
 
-    public HttpRequest(HttpRequestStartLine httpRequestStartLine,
-        HttpRequestHeader httpRequestHeader, HttpRequestBody httpRequestBody) {
-        this.httpRequestStartLine = httpRequestStartLine;
-        this.httpRequestHeader = httpRequestHeader;
-        this.httpRequestBody = httpRequestBody;
+    public HttpRequest(StartLine startLine,
+        Header header, Body body) {
+        this.startLine = startLine;
+        this.header = header;
+        this.body = body;
     }
 
-    public HttpRequestStartLine getHttpRequestStartLine() {
-        return httpRequestStartLine;
+    public StartLine getHttpRequestStartLine() {
+        return startLine;
     }
 
-    public HttpRequestHeader getHttpRequestHeader() {
-        return httpRequestHeader;
+    public Header getHttpRequestHeader() {
+        return header;
     }
 
-    public HttpRequestBody getHttpRequestBody() {
-        return httpRequestBody;
+    public Body getHttpRequestBody() {
+        return body;
     }
 }

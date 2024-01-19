@@ -3,11 +3,11 @@ package http.response;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpResponseHeader {
+public class Header {
 
     private Map<String, String> headers;
 
-    public HttpResponseHeader(HashMap<String, String> headers) {
+    public Header(HashMap<String, String> headers) {
         this.headers = headers;
     }
 
