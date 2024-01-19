@@ -7,7 +7,7 @@ public class StartLine {
     private String httpVersion;
 
     public StartLine(String httpMethod, String requestTarget, String httpVersion) {
-        this.httpMethod = HttpMethod.of(httpMethod);
+        this.httpMethod = HttpMethod.parseHttpMethod(httpMethod);
         this.requestTarget = requestTarget;
         this.httpVersion = httpVersion;
     }

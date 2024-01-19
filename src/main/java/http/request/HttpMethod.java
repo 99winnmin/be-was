@@ -15,7 +15,7 @@ public enum HttpMethod {
         return this.name();
     }
 
-    public static HttpMethod of(String method) {
+    public static HttpMethod parseHttpMethod(String method) {
         try {
             return HttpMethod.valueOf(method.toUpperCase());
         } catch (IllegalArgumentException e) {
