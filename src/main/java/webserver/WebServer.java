@@ -1,10 +1,11 @@
 package webserver;
 
+import common.logger.CustomLogger;
+import common.utils.AsyncExecutor;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import logger.CustomLogger;
 
 public class WebServer {
 
@@ -12,10 +13,12 @@ public class WebServer {
 
     private final int port;
     private final ExecutorService executorService;
+    private final AsyncExecutor asyncExecutor;
 
     public WebServer(int port) {
         this.port = port;
         this.executorService = Executors.newFixedThreadPool(30);
+        this.asyncExecutor = AsyncExecutor.getInstance();
     }
 
     private void start() {
@@ -24,12 +27,13 @@ public class WebServer {
 
             Socket connection;
             while ((connection = serverSocket.accept()) != null) {
-                executorService.execute(new HttpProcessor(connection));
+                executorService.execute(new ServerContainer(connection));
             }
         } catch (Exception e) {
             CustomLogger.printError(e);
         } finally {
             executorService.shutdown();
+            asyncExecutor.shutdown();
         }
     }
 
