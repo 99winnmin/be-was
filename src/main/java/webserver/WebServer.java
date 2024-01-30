@@ -1,11 +1,14 @@
 package webserver;
 
+import common.db.DatabaseConfig;
+import common.db.DatabaseInitializer;
 import common.logger.CustomLogger;
 import common.utils.AsyncExecutor;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.sql.DataSource;
 
 public class WebServer {
 
@@ -22,6 +25,9 @@ public class WebServer {
     }
 
     private void start() {
+        DataSource dataSource = DatabaseConfig.getDatasource();
+        DatabaseInitializer.initializeDatabase(dataSource, "init.sql");
+
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             CustomLogger.printInfo("Web Application Server started " + port + " port.");
 
