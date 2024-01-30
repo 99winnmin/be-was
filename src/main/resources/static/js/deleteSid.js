@@ -6,7 +6,7 @@ document.getElementById('logoutButton').addEventListener('click', function(event
     // 'sid' 쿠키를 삭제하는 함수를 호출합니다.
     deleteCookie('sid');
 
-    window.location.href = 'user/login.html';
+    window.location.href = '/user/login.html';
 
 });
 
