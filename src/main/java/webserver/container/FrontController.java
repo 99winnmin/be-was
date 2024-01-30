@@ -5,6 +5,7 @@ import common.annotation.RequestMapping;
 import common.annotation.RequestParam;
 import common.http.request.HttpMethod;
 import common.http.response.HttpStatusCode;
+import domain.qna.presentation.QnAController;
 import domain.user.presentation.UserController;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -34,6 +35,7 @@ public class FrontController {
 
     static {
         CONTROLLERS.add(UserController.class);
+        CONTROLLERS.add(QnAController.class);
         initializeControllerMethods();
     }
 
