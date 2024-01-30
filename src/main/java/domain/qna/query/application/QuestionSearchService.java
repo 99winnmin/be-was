@@ -7,6 +7,7 @@ import domain.qna.query.dao.QuestionDao;
 import domain.qna.query.dto.QuestionDetailInfo;
 import domain.qna.query.dto.QuestionSimpleInfo;
 import domain.user.infrastructure.SessionStorageService;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import webserver.container.CustomThreadLocal;
@@ -33,7 +34,7 @@ public class QuestionSearchService {
     public void getQuestionDetailInfo(String questionId) {
         Optional<QuestionDetailInfo> questionDetailInfo = questionDao.findQuestionDetailInfoByQuestionId(questionId);
         if (questionDetailInfo.isEmpty()) {
-            CustomThreadLocal.onFailure(HttpStatusCode.NOT_FOUND, ResponseUtils.makeRedirection("/index.html"), new byte[0]);
+            CustomThreadLocal.onFailure(HttpStatusCode.NOT_FOUND, new HashMap<>(), new byte[0]);
             return;
         }
 

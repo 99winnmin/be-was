@@ -17,7 +17,7 @@ public class Dispatcher {
         return SingletonHelper.SINGLETON;
     }
 
-    public void process(HttpRequest request) throws Exception {
+    public void process(HttpRequest request) {
         boolean isStaticRequest = isStaticResource(
             request.getHttpRequestStartLine().getRequestTarget());
         if (isStaticRequest) {

@@ -5,6 +5,8 @@ import common.annotation.RequestMapping;
 import common.annotation.RequestParam;
 import common.http.request.HttpMethod;
 import common.http.response.HttpStatusCode;
+import common.logger.CustomLogger;
+import common.utils.ResponseUtils;
 import domain.qna.presentation.QnAController;
 import domain.user.presentation.UserController;
 import java.lang.reflect.Constructor;
@@ -14,6 +16,7 @@ import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class FrontController {
@@ -55,13 +58,12 @@ public class FrontController {
         }
     }
 
-    public Method findControllerMethod(HttpMethod method, String path) {
+    public Optional<Method> findControllerMethod(HttpMethod method, String path) {
         String key = method + ":" + path;
         if (CONTROLLER_METHODS.containsKey(key)) {
-            return CONTROLLER_METHODS.get(key);
+            return Optional.of(CONTROLLER_METHODS.get(key));
         }
-
-        throw new IllegalArgumentException("Not found controller method");
+        return Optional.empty();
     }
 
     public void invokeFunc(Method method, Map<String, String> params, Map<String, String> body) {
@@ -89,7 +91,8 @@ public class FrontController {
 
             method.invoke(newInstance, parameterValues);
         } catch (Exception e) {
-            CustomThreadLocal.onFailure(HttpStatusCode.BAD_REQUEST, null, "Bad Request".getBytes());
+            CustomLogger.printError(e);
+            CustomThreadLocal.onFailure(HttpStatusCode.BAD_REQUEST, ResponseUtils.makeRedirection("/error/400.html"), "Bad Request".getBytes());
         }
 
     }

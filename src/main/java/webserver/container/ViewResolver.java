@@ -26,7 +26,7 @@ public class ViewResolver {
         return SingletonHelper.SINGLETON;
     }
 
-    public void findModelAndView(String target) throws IOException {
+    public void findModelAndView(String target) {
         byte[] body = null;
         File file;
 
@@ -37,7 +37,8 @@ public class ViewResolver {
         }
 
         if (!file.exists()) {
-            throw new FileNotFoundException("File not found: " + file.toString());
+            CustomThreadLocal.onFailure(HttpStatusCode.FOUND, ResponseUtils.makeRedirection("/error/404.html"), new byte[0]);
+            return;
         }
 
         try (InputStream inputStream = new FileInputStream(file);
@@ -51,6 +52,12 @@ public class ViewResolver {
             }
 
             body = outputStream.toByteArray();
+        } catch (FileNotFoundException e) {
+            CustomThreadLocal.onFailure(HttpStatusCode.FOUND, ResponseUtils.makeRedirection("/error/404.html"), new byte[0]);
+            return;
+        } catch (IOException e) {
+            CustomThreadLocal.onFailure(HttpStatusCode.FOUND, ResponseUtils.makeRedirection("/error/500.html"), new byte[0]);
+            return;
         }
 
         CustomThreadLocal.onSuccess(HttpStatusCode.OK, ResponseUtils.makeViewHeader(body.length, target), body);

@@ -3,8 +3,11 @@ package webserver.container;
 
 import common.http.request.HttpMethod;
 import common.http.request.HttpRequest;
+import common.http.response.HttpStatusCode;
+import common.utils.ResponseUtils;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.Optional;
 
 public class HandlerMapping {
 
@@ -27,8 +30,12 @@ public class HandlerMapping {
         Map<String, String> params = httpRequest.parsingParams();
         Map<String, String> body = httpRequest.getHttpRequestBody().getBody();
 
-        Method controllerMethod = FrontController.getInstance().findControllerMethod(httpMethod, path);
-        FrontController.getInstance().invokeFunc(controllerMethod, params, body);
+        Optional<Method> controllerMethod = FrontController.getInstance().findControllerMethod(httpMethod, path);
+        if (controllerMethod.isEmpty()) {
+            CustomThreadLocal.onFailure(HttpStatusCode.BAD_REQUEST, ResponseUtils.makeRedirection("/error/400.html"), new byte[0]);
+            return;
+        }
+        FrontController.getInstance().invokeFunc(controllerMethod.get(), params, body);
     }
 
 }
