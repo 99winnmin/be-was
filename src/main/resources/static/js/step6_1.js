@@ -6,7 +6,20 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'GET', // 또는 'POST', 서버 구현에 따라 달라질 수 있음
             credentials: 'include' // 쿠키를 포함시키기 위해 필요
         })
-        .then(response => response.json()) // 응답을 JSON 형태로 변환
+        .then(response => {
+                // 응답 상태 코드가 404인 경우 /error/404.html로 리다이렉션
+                if (response.status === 404) {
+                    window.location.href = '/error/404.html';
+                    return;
+                } else if (response.status === 400) {
+                    window.location.href = '/error/400.html';
+                    return;
+                } else if (response.status === 500) {
+                    window.location.href = '/error/500.html';
+                    return;
+                }
+                return response.json();
+        })
         .then(data => {
             // 서버로부터 받은 사용자 이름으로 화면 업데이트
             document.getElementById('userNameDisplay').querySelector('a').textContent = data.userName;

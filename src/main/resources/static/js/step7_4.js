@@ -14,7 +14,21 @@ document.addEventListener('DOMContentLoaded', function() {
         method: 'GET',
         credentials: 'include' // 쿠키 등의 인증 정보를 포함시키기 위함
     })
-    .then(response => response.json())
+    .then(response => {
+            // 응답 상태 코드가 404인 경우 /error/404.html로 리다이렉션
+            if (response.status === 404) {
+                window.location.href = '/error/404.html';
+                return;
+            } else if (response.status === 400) {
+                window.location.href = '/error/400.html';
+                return;
+            } else if (response.status === 500) {
+                window.location.href = '/error/500.html';
+                return;
+            }
+            // 응답이 정상적인 경우, JSON으로 파싱하여 처리
+            return response.json();
+    })
     .then(data => {
         console.log('Success: ', data);
         // 페이지에 데이터 채우기

@@ -3,7 +3,20 @@ function fetchQnaList() {
         method: 'GET',
         credentials: 'include'
     })
-    .then(response => response.json()) // response.json()을 여기서 처리합니다.
+    .then(response => {
+        // 응답 상태 코드가 404인 경우 /error/404.html로 리다이렉션
+        if (response.status === 404) {
+            window.location.href = '/error/404.html';
+            return;
+        } else if (response.status === 400) {
+            window.location.href = '/error/400.html';
+            return;
+        } else if (response.status === 500) {
+            window.location.href = '/error/500.html';
+            return;
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Success: ', data);
         const qnaTable = document.getElementById('qnaTable').getElementsByTagName('tbody')[0];

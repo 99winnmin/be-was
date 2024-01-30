@@ -23,7 +23,20 @@ document.addEventListener("DOMContentLoaded", function() {
   } else {
     // 'sid' 쿠키가 있으면 /user/list API 호출
     fetch('/user/list')
-      .then(response => response.json())
+      .then(response => {
+              // 응답 상태 코드가 404인 경우 /error/404.html로 리다이렉션
+              if (response.status === 404) {
+                  window.location.href = '/error/404.html';
+                  return;
+              } else if (response.status === 400) {
+                  window.location.href = '/error/400.html';
+                  return;
+              } else if (response.status === 500) {
+                  window.location.href = '/error/500.html';
+                  return;
+              }
+              return response.json();
+      })
       .then(data => {
         const tbody = document.querySelector('.table tbody');
         tbody.innerHTML = ''; // 기존 행 삭제

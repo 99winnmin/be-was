@@ -17,8 +17,20 @@ document.addEventListener('DOMContentLoaded', function() {
             })
         })
         .then(response => {
-            // 최종 요청 성공 후 처리, 예를 들어 질문 목록 페이지로 리다이렉션
-            window.location.href = '/index.html'; // 성공 시 리다이렉션할 페이지 주소
+                    // 응답 상태 코드가 404인 경우 /error/404.html로 리다이렉션
+                    if (response.status === 404) {
+                        window.location.href = '/error/404.html';
+                        return;
+                    } else if (response.status === 400) {
+                        window.location.href = '/error/400.html';
+                        return;
+                    } else if (response.status === 500) {
+                        window.location.href = '/error/500.html';
+                        return;
+                    }
+                    // 응답이 정상적인 경우, JSON으로 파싱하여 처리
+                    window.location.href = '/index.html';
+                    return;
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
