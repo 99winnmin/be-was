@@ -8,15 +8,14 @@ import common.http.request.StartLine;
 import common.http.response.HttpResponse;
 import common.http.response.HttpStatusCode;
 import common.logger.CustomLogger;
+import common.utils.JsonParser;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 import webserver.container.CustomThreadLocal;
@@ -84,27 +83,9 @@ public class ServerContainer implements Runnable {
             }
         }
 
-        Body body = new Body(parseRequestBody(requestBodyBuilder.toString()));
+        Body body = new Body(JsonParser.parseRequestBody(requestBodyBuilder.toString()));
         return new HttpRequest(startLine, header, body);
     }
-
-    private Map<String, String> parseRequestBody(String requestBody)
-        throws UnsupportedEncodingException {
-        Map<String, String> parsedBody = new HashMap<>();
-        if (!requestBody.isEmpty()) {
-            String[] pairs = requestBody.split("&");
-            for (String pair : pairs) {
-                String[] keyValue = pair.split("=");
-                if (keyValue.length == 2) {
-                    String key = URLDecoder.decode(keyValue[0], "UTF-8");
-                    String value = URLDecoder.decode(keyValue[1], "UTF-8");
-                    parsedBody.put(key, value);
-                }
-            }
-        }
-        return parsedBody;
-    }
-
 
     private StartLine parsingStringLine(String startLine) {
         String[] startLines = startLine.split(" ");
